@@ -1,9 +1,7 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 const galleryRef = document.querySelector('.gallery');
-const galleryItemsMarkup = createGalleryItemsMarkup(galleryItems);
-
-galleryRef.insertAdjacentHTML('beforeend', galleryItemsMarkup);
+galleryRef.innerHTML = createGalleryItemsMarkup(galleryItems);
 galleryRef.addEventListener('click', onZoomImage);
 
 function onZoomImage(evt) {
@@ -14,21 +12,18 @@ function onZoomImage(evt) {
 }
 
 function runLightbox(evt) {
-  const lightboxInstance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}">
-`);
+  const lightboxInstance = basicLightbox.create(
+    `<img src="${evt.target.dataset.source}">`,
+    {
+      onShow: () => window.addEventListener('keydown', onEscPress),
+      onClose: () => window.removeEventListener('keydown', onEscPress),
+    }
+  );
 
   lightboxInstance.show();
 
-  window.addEventListener('keydown', onEscPress);
-
   function onEscPress(evt) {
-    if (evt.code === 'Escape') {
-      lightboxInstance.close();
-      window.removeEventListener('keydown', onEscPress);
-    }
-
-    if (!lightboxInstance.visible()) window.removeEventListener('keydown', onEscPress);
+    if (evt.code === 'Escape') lightboxInstance.close();
   }
 }
 
