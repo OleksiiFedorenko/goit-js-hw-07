@@ -15,8 +15,8 @@ function runLightbox(evt) {
   const lightboxInstance = basicLightbox.create(
     `<img src="${evt.target.dataset.source}">`,
     {
-      onShow: () => window.addEventListener('keydown', onEscPress),
-      onClose: () => window.removeEventListener('keydown', onEscPress),
+      onShow: () => document.addEventListener('keydown', onEscPress),
+      onClose: () => document.removeEventListener('keydown', onEscPress),
     }
   );
 
